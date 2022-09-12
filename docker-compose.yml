@@ -16,9 +16,9 @@ services:
       - web
       - stack_network
 
-  web:
+  nginx:
     image: nginx
-    container_name: pretix.web
+    container_name: pretix.nginx
     ports:
       - '80:80'
       - '443:443'
