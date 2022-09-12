@@ -9,7 +9,7 @@ sed -i "s/example.com/$domain/g" init-letsencrypt.sh
 
 # Replace email 
 read -p "Enter your email address (associated with letsencrpyt): " email
-sed -i "s/yourname@example.net/$email/g" init-letsencrpyt.sh
+sed -i "s/yourname\@example.net/$email/g" init-letsencrpyt.sh
 
 # install docker
 apt install docker.io docker-compose
@@ -40,7 +40,7 @@ chmod 0700 /etc/pretix/pretix.cfg
 # systemctl enable pretix
 # systemctl start pretix
 docker network create web
-docker-compose up
+docker-compose up -d
 
 
 # Create cron job
