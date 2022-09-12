@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+
+  pretix:
+    image: 'pretix/standalone:stable'
+    container_name: pretix.service
+    restart: always 
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - /var/pretix-data:/data
+      - /etc/pretix:/etc/pretix
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=web"
+      - "traefik.frontend.rule=Host:example.com" 
+      - "traefik.port=80"
+    networks:
+      - web
+      - stack_network
+
+  web:
+    image: nginx
+    volumes: ./templates:/etc/nginx/templates
+    ports:
+      - '8080:80'
+    environment:
+      - NGINX_HOST=example.com
+      - NGINX_PORT=80
+
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_USER=pretix
+      - POSTGRES_PASSWORD=pretix
+      - POSTGRES_DB=pretix
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - /var/pgdata:/var/lib/postgresql/data/pgdata
+    ports: 
+      - '5432:5432'
+    networks:
+      - stack_network
+  
+  redis:
+    image: redis:latest
+    restart: always
+    networks:
+      - stack_network
+
+networks: 
+  web:
+    external: true
+  stack_network:
+    external: false
