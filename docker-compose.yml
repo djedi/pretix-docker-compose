@@ -12,25 +12,35 @@ services:
     volumes:
       - /var/pretix-data:/data
       - /etc/pretix:/etc/pretix
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=web"
-      - "traefik.frontend.rule=Host:example.com" 
-      - "traefik.port=80"
     networks:
       - web
       - stack_network
 
   web:
     image: nginx
+    container_name: pretix.web
     ports:
-      - '8080:80'
+      - '80:80'
+      - '443:443'
+    volumes:
+      - /var/nginx:/etc/nginx/conf.d
+      - /var/certbot/conf:/etc/letsencrypt
+      - /var/certbot/www:/var/www/certbot
     environment:
       - NGINX_HOST=example.com
-      - NGINX_PORT=80
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+  
+  certbot:
+    image: certbot/certbot
+    container_name: pretix.certbot
+    volumes:
+      - /var/certbot/conf:/etc/letsencrypt
+      - /var/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
   db:
     image: postgres:latest
+    container_name: pretix.db
     restart: always
     environment:
       - POSTGRES_USER=pretix
@@ -46,6 +56,7 @@ services:
   
   redis:
     image: redis:latest
+    container_name: pretix.redis
     restart: always
     networks:
       - stack_network

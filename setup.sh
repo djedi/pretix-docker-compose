@@ -4,6 +4,13 @@
 read -p "Enter your domain name (example.com): " domain
 sed -i "s/example.com/$domain/g" pretix.cfg
 sed -i "s/example.com/$domain/g" docker-compose.yml
+sed -i "s/example.com/$domain/g" nginx.conf
+sed -i "s/example.com/$domain/g" init-letsencrypt.sh
+
+# Replace email 
+read -p "Enter your email address (associated with letsencrpyt): " email
+sed -i "s/yourname@example.net/$email/g" init-letsencrpyt.sh
+./init-letsencrpyt.sh
 
 # install docker
 apt install docker.io docker-compose
@@ -16,6 +23,9 @@ docker run -d -p 8000:8000 -p 9443:9443 --name portainer --restart=always -v /va
 mkdir -p /var/pretix-data
 chown -R 15371:15371 /var/pretix-data
 mkdir -p /var/pgdata
+mkdir -p /var/nginx
+cp ./nginx.conf /var/nginx/pretix.conf
+mkdir -p /var/certbot/conf /var/certbot/letsencrypt
 
 # Config directory and file for pretix
 mkdir -p /etc/pretix
