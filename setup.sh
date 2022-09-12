@@ -28,6 +28,7 @@ chmod 0700 /etc/pretix/pretix.cfg
 # systemctl daemon-reload
 # systemctl enable pretix
 # systemctl start pretix
+docker network create web
 docker-compose up
 
 
