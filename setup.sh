@@ -2,8 +2,8 @@
 
 # Replace example.com with your domain
 read -p "Enter your domain name (example.com): " domain
-sed -i "s/exmple.com/$domain/g" pretix.cfg
-sed -i "s/exmple.com/$domain/g" docker-compose.yml
+sed -i "s/example.com/$domain/g" pretix.cfg
+sed -i "s/example.com/$domain/g" docker-compose.yml
 
 # install docker
 apt install docker.io docker-compose
