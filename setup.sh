@@ -32,7 +32,7 @@ cp ./nginx/certbot.conf /var/nginx/default.conf
 docker network create web
 ./init-letsencrypt.sh
 cp ./nginx/pretix.conf /var/nginx/default.conf
-docker-compose restert nginx
+docker-compose restart nginx
 
 # Config directory and file for pretix
 mkdir -p /etc/pretix
