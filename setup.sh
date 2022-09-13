@@ -29,8 +29,10 @@ touch /var/certbot/conf/options-ssl-nginx.conf /var/certbot/conf/ssl-dhparams.pe
 
 # Get initial cert
 cp ./nginx/certbot.conf /var/nginx/default.conf
+docker network create web
 ./init-letsencrypt.sh
 cp ./nginx/pretix.conf /var/nginx/default.conf
+docker-compose restert nginx
 
 # Config directory and file for pretix
 mkdir -p /etc/pretix
@@ -43,7 +45,6 @@ chmod 0700 /etc/pretix/pretix.cfg
 # systemctl daemon-reload
 # systemctl enable pretix
 # systemctl start pretix
-docker network create web
 docker-compose up -d
 
 
