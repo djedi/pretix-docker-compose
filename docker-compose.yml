@@ -10,7 +10,7 @@ services:
       - db
       - redis
     ports:
-      - '127.0.0.1:8345:80'
+      - '8345:80'
     volumes:
       - /var/pretix-data:/data
       - /etc/pretix:/etc/pretix
@@ -23,6 +23,7 @@ services:
   nginx:
     image: nginx
     container_name: pretix.nginx
+    restart: always
     ports:
       - '80:80'
       - '443:443'
@@ -40,6 +41,7 @@ services:
   certbot:
     image: certbot/certbot
     container_name: pretix.certbot
+    restart: unless-stopped
     volumes:
       - /var/certbot/conf:/etc/letsencrypt
       - /var/certbot/www:/var/www/certbot
