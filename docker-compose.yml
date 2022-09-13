@@ -10,10 +10,13 @@ services:
       - db
       - redis
     ports:
-      - '8345:8345'
+      - '127.0.0.1:8345:80'
     volumes:
       - /var/pretix-data:/data
       - /etc/pretix:/etc/pretix
+      - /var/run/redis:/var/run/redis
+    sysctls:
+      - net.core.somaxconn=4096
     networks:
       - stack_network
 
