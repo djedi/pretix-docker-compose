@@ -9,6 +9,8 @@ services:
     depends_on:
       - db
       - redis
+    ports:
+      - '8345:8345'
     volumes:
       - /var/pretix-data:/data
       - /etc/pretix:/etc/pretix
