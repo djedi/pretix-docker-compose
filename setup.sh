@@ -25,7 +25,6 @@ chown -R 15371:15371 /var/pretix-data
 mkdir -p /var/pgdata
 mkdir -p /var/nginx
 mkdir -p /var/certbot/conf /var/certbot/letsencrypt
-touch /var/certbot/conf/options-ssl-nginx.conf /var/certbot/conf/ssl-dhparams.pem
 
 # Get initial cert
 cp ./nginx/certbot.conf /var/nginx/default.conf
